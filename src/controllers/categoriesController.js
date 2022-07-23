@@ -12,3 +12,18 @@ export async function readCategories (req, res) {
         res.sendStatus(500);
     }
 }
+
+export async function createCategories (req, res) {
+    const { name } = req.body;
+
+    try {
+        await connection.query(
+            `INSERT INTO categories (name) VALUES ($1)`, [name]
+        );
+
+        res.sendStatus(201);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
