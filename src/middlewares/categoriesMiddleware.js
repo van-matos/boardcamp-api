@@ -24,6 +24,4 @@ export async function validateCategory (req, res, next) {
         console.log(error);
         res.sendStatus(500);
     }
-    
-    
 }
