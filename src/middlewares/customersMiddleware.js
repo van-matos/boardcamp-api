@@ -16,7 +16,34 @@ export async function validateCustomer (req, res, next) {
             [cpf]
         );
 
-        if (dbCustomers.some( c => c.cpf === cpf)) {
+        if (dbCustomers.length) {
+            return res.sendStatus(409);
+        }
+
+        next();
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+
+export async function validateCustomerCpf (req, res, next) {
+    const { cpf } = req.body;
+    const { id } = req.params;
+
+    try {
+        const { error } = customersSchema.validate(req.body, { abortEarly: false });
+
+        if (error) {
+            return res.sendStatus(400);
+        }
+
+        const { rows: dbCpf } = await connection.query(
+            `SELECT * FROM customers WHERE cpf = $1 AND id <> $2`,
+            [cpf, id]
+        );
+
+        if (dbCpf.length) {
             return res.sendStatus(409);
         }
 

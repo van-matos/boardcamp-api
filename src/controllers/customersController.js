@@ -54,3 +54,19 @@ export async function createCustomers (req, res) {
         res.sendStatus(500);
     }
 }
+
+export async function updateCustomers (req, res) {
+    const { name, phone, cpf, birthday } = req.body;
+    const { id } = req.params;
+
+    try {
+        await connection.query(
+            `UPDATE customers SET (name, phone, cpf, birthday) = ($1, $2, $3, $4) WHERE id = $5`,
+            [name, phone, cpf, birthday, id]
+        );
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}

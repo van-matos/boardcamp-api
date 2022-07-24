@@ -16,7 +16,7 @@ export async function validateCategory (req, res, next) {
             [name]
         );
 
-        if (dbCategories.some( c => c.name === name)) {
+        if (dbCategories.length) {
             return res.sendStatus(409);
         }
 

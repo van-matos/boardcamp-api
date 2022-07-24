@@ -20,11 +20,11 @@ export async function validateGame (req, res, next) {
             return res.sendStatus(400);
         }
 
-        if (stockTotal <= 0 || pricePerDay <= 0 || !dbCategories.some(c => c.id === categoryId)) {
+        if (stockTotal <= 0 || pricePerDay <= 0 || !dbCategories.length) {
             return res.sendStatus(400);
         }
 
-        if (dbGames.some(c => c.name === name)) {
+        if (dbGames.length) {
             return res.sendStatus(409);
         }
 
