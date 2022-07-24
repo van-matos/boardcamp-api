@@ -14,6 +14,7 @@ export async function validateCategory (req, res, next) {
         const { rows: dbCategories } = await connection.query(
             `SELECT name FROM categories`
         );
+        
 
         if (dbCategories.some( c => c.name === name)) {
             return res.sendStatus(409);
