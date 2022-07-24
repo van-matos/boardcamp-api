@@ -1,5 +1,6 @@
-import connection from '../dbStrategy/postgres.js';
 import dayjs from "dayjs";
+
+import connection from '../dbStrategy/postgres.js';
 
 export async function readCustomers (req, res) {
     const { cpf } = req.query;
