@@ -12,7 +12,8 @@ export async function validateCustomer (req, res, next) {
         }
 
         const { rows: dbCustomers } = await connection.query(
-            `SELECT cpf FROM customers`
+            `SELECT * FROM customers WHERE cpf = $1`,
+            [cpf]
         );
 
         if (dbCustomers.some( c => c.cpf === cpf)) {
@@ -24,4 +25,25 @@ export async function validateCustomer (req, res, next) {
         console.log(error);
         res.sendStatus(500);
     }
+}
+
+export async function validateCustomerId (req, res, next) {
+    const { id } = req.params;
+
+    try {
+        const { rows: dbCustomer } = await connection.query(
+            `SELECT * FROM customers WHERE id = $1`,
+            [id]
+        );
+    
+        if (!dbCustomer.length) {
+            return res.sendStatus(404);
+        }
+        
+        res.locals.customer = dbCustomer;
+        next();
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }    
 }

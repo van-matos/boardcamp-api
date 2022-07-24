@@ -6,10 +6,12 @@ export async function validateGame (req, res, next) {
 
     try {
         const { rows: dbCategories } = await connection.query(
-            `SELECT id FROM categories`
+            `SELECT * FROM categories WHERE id = $1`,
+            [categoryId]
         );
         const { rows: dbGames } = await connection.query(
-            `SELECT name FROM games`
+            `SELECT * FROM games WHERE name = $1`,
+            [name]
         );
 
         const { error } = gamesSchema.validate(req.body, { abortEarly: false });

@@ -27,6 +27,19 @@ export async function readCustomers (req, res) {
     }
 }
 
+export async function readCustomersById (req, res) {
+    const { customer }  = res.locals;
+
+    try {
+        customer.map(c => c.birthday = dayjs(c.birthday).format("YYYY-MM-DD"));
+
+        res.send(customer);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+
 export async function createCustomers (req, res) {
     const { name, phone, cpf, birthday } = req.body;
 
