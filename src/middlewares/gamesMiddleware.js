@@ -1,5 +1,5 @@
-import gamesSchema from "../schemas/gamesSchema.js";
 import connection from '../dbStrategy/postgres.js';
+import gamesSchema from "../schemas/gamesSchema.js";
 
 export async function validateGame (req, res, next) {
     const { name, stockTotal, categoryId, pricePerDay } = req.body;
@@ -20,7 +20,7 @@ export async function validateGame (req, res, next) {
             return res.sendStatus(400);
         }
 
-        if (stockTotal <= 0 || pricePerDay <= 0 || !dbCategories.length) {
+        if (!dbCategories.length) {
             return res.sendStatus(400);
         }
 

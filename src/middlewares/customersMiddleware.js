@@ -1,5 +1,5 @@
-import customersSchema from "../schemas/customersSchema.js";
 import connection from '../dbStrategy/postgres.js';
+import customersSchema from "../schemas/customersSchema.js";
 
 export async function validateCustomer (req, res, next) {
     const { cpf } = req.body;

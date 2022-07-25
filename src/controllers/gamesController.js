@@ -6,14 +6,20 @@ export async function readGames (req, res) {
 
     try {
         if (name) {
-            const { rows: gamesList } = await connection.query(
-                `SELECT games.*, categories.name as "categoryName" FROM games JOIN categories ON games."categoryId" = categories.id WHERE LOWER(games.name) LIKE LOWER('${name}%')`
-            )
+            const { rows: gamesList } = await connection.query(`
+                SELECT games.*, categories.name as "categoryName" 
+                FROM games JOIN categories 
+                ON games."categoryId" = categories.id 
+                WHERE LOWER(games.name) LIKE LOWER('${name}%')
+                `)
             games = gamesList;
         } else {
-            const { rows: gamesList } = await connection.query(
-                `SELECT games.*, categories.name as "categoryName" FROM games JOIN categories ON games."categoryId" = categories.id`
-            )
+            const { rows: gamesList } = await connection.query(`
+                SELECT games.*, categories.name as "categoryName" 
+                FROM games 
+                JOIN categories 
+                ON games."categoryId" = categories.id
+                `)
             games = gamesList;
         }
     

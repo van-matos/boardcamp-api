@@ -1,5 +1,5 @@
-import categoriesSchema from "../schemas/categoriesSchema.js";
 import connection from '../dbStrategy/postgres.js';
+import categoriesSchema from "../schemas/categoriesSchema.js";
 
 export async function validateCategory (req, res, next) {
     const { name } = req.body;

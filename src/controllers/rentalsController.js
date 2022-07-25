@@ -7,9 +7,10 @@ export async function createRentals (req, res) {
     const { pricePerDay } = res.locals;
 
     try {
-        await connection.query(
-            `INSERT INTO rentals ("customerId", "gameId", "rentDate", "daysRented", "returnDate", "originalPrice", "delayFee") VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-            [customerId, gameId, dayjs().format("YYYY-MM-DD"), daysRented, null, pricePerDay * daysRented, null]
+        await connection.query(`
+            INSERT INTO rentals ("customerId", "gameId", "rentDate", "daysRented", "returnDate", "originalPrice", "delayFee") 
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            `, [customerId, gameId, dayjs().format("YYYY-MM-DD"), daysRented, null, pricePerDay * daysRented, null]
         );
 
         res.sendStatus(201);
