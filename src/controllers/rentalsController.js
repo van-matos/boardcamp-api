@@ -34,18 +34,18 @@ export async function readRentals (req, res) {
         };
 
         const { rows: dbRentals } = await connection.query(`
-        SELECT rentals.*,
-            games.id as "gameId",
-            games.name as "gameName",
-            categories.id as "categoryId",
-            categories.name as "categoryName",
-            customers.id as "customerId",
-            customers.name as "customerName" 
-        FROM rentals 
-        JOIN customers ON rentals."customerId" = customers.id 
-        JOIN games ON rentals."gameId" = games.id 
-        JOIN categories ON games."categoryId" = categories.id 
-        ${queryParams}
+            SELECT rentals.*,
+                games.id as "gameId",
+                games.name as "gameName",
+                categories.id as "categoryId",
+                categories.name as "categoryName",
+                customers.id as "customerId",
+                customers.name as "customerName" 
+            FROM rentals 
+            JOIN customers ON rentals."customerId" = customers.id 
+            JOIN games ON rentals."gameId" = games.id 
+            JOIN categories ON games."categoryId" = categories.id 
+            ${queryParams}
         `);
 
         const rentals = formatRentals(dbRentals);
@@ -104,7 +104,7 @@ export async function updateRentals (req, res) {
     try {
         await connection.query(
             `UPDATE rentals SET ("returnDate", "delayFee") = ($1, $2) WHERE id = $3`,
-            [currentDay,  delayFee, id]
+            [currentDay, delayFee, id]
         );
 
         res.sendStatus(200);

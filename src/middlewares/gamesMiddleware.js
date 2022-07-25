@@ -2,7 +2,7 @@ import connection from '../dbStrategy/postgres.js';
 import gamesSchema from "../schemas/gamesSchema.js";
 
 export async function validateGame (req, res, next) {
-    const { name, stockTotal, categoryId, pricePerDay } = req.body;
+    const { name, categoryId } = req.body;
 
     try {
         const { rows: dbCategories } = await connection.query(
