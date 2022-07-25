@@ -64,3 +64,27 @@ export async function validateRentalReturn (req, res, next) {
         res.sendStatus(500);
     }
 }
+
+export async function validateRentalDelete (req, res, next) {
+    const { id } = req.params;
+
+    try {
+        const { rows: dbRental } = await connection.query(
+            `SELECT "returnDate" FROM rentals WHERE rentals.id = $1`,
+            [id]
+        );
+
+        if (!dbRental.length) {
+            return res.sendStatus(404);
+        }
+
+        if (!dbRental[0].returnDate) {
+            return res.sendStatus(400);
+        }
+
+        next();
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
