@@ -32,3 +32,35 @@ export async function validateRental (req, res, next) {
         res.sendStatus(500);
     }
 }
+
+export async function validateRentalReturn (req, res, next) {
+    const { id } = req.params;
+
+    try {
+        const { rows: dbRental } = await connection.query(`
+            SELECT rentals.id, rentals."returnDate", rentals."rentDate", rentals."daysRented", games."pricePerDay"
+            FROM rentals 
+            JOIN games 
+            ON rentals."gameId"=games.id 
+            WHERE rentals.id=$1
+        `, [id]
+        );
+
+        if (!dbRental.length) {
+            return res.sendStatus(404);
+        }
+
+        if (dbRental[0].returnDate) {
+            return res.sendStatus(400);
+        }
+
+        res.locals.daysRented = dbRental[0].daysRented;
+        res.locals.rentDate = dbRental[0].rentDate;
+        res.locals.pricePerDay = dbRental[0].pricePerDay;
+
+        next();
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}

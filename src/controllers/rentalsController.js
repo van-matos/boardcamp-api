@@ -90,3 +90,27 @@ function formatRentals (dbRentals) {
 
     return rentals;
 }
+
+export async function updateRentals (req, res) {
+    const { id } = req.params;
+    const { daysRented, pricePerDay, rentDate } = res.locals;
+
+    const currentDay = dayjs();
+    const rentDay = dayjs(rentDate);
+
+    const delayFee = currentDay.diff(rentDay, "day") - daysRented > 0 ? (currentDay.diff(rentDay, "day") - daysRented) * pricePerDay : 0;
+
+    try {
+        await connection.query(
+            `UPDATE rentals SET ("returnDate", "delayFee") = ($1, $2) WHERE id = $3`,
+            [currentDay,  delayFee, id]
+        );
+
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+
+    
+}
