@@ -21,7 +21,12 @@ export async function validateRental (req, res, next) {
             [gameId]
         );
 
-        if (!dbCustomers.length || !dbGames.length) {
+        const { rows: dbRentals } = await connection.query(
+            `SELECT * FROM rentals WHERE "gameId" = $1`,
+            [gameId]
+        );
+
+        if (!dbCustomers.length || !dbGames.length || dbRentals.length + 1 > dbGames[0].stockTotal) {
             return res.sendStatus(400);
         }
 
